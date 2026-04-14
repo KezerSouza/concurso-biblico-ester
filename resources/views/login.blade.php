@@ -41,4 +41,72 @@
 
         </div>
     </div>
+    {{-- CONFETE: para remover, apague o bloco <script> abaixo --}}
+    <script>
+        const config = {
+            count: 50,        // quantidade de partículas
+            speedY: 1.5,       // velocidade de queda (maior = mais rápido)
+            speedX: 0.5,       // oscilação lateral
+            rotationSpeed: 3,  // velocidade de rotação
+            sizeW: 10,         // largura máxima do confete
+            sizeH: 5,          // altura máxima do confete
+        };
+
+        const canvas = document.createElement('canvas');
+        canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+        document.body.prepend(canvas);
+
+        const ctx = canvas.getContext('2d');
+        const colors = ['#FFD700', '#DC3545', '#0D6EFD'];
+        const particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function Particle() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.width = Math.random() * config.sizeW + 5;
+            this.height = Math.random() * config.sizeH + 3;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.speedY = Math.random() * config.speedY + 0.5;
+            this.speedX = (Math.random() - 0.5) * config.speedX;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * config.rotationSpeed;
+        }
+
+        for (let i = 0; i < config.count; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotationSpeed;
+
+                if (p.y > canvas.height + 10) {
+                    p.y = -10;
+                    p.x = Math.random() * canvas.width;
+                }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.width / 2, -p.height / 2, p.width, p.height);
+                ctx.restore();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
 </x-layout>
