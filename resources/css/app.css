@@ -1,1 +1,14 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+    --bs-primary: #212529;
+    --bs-primary-rgb: 33, 37, 41;
+    --bs-link-color: #212529;
+    --bs-link-hover-color: #000;
+    --bs-focus-ring-color: rgba(33, 37, 41, 0.25);
+}
+
+.form-control:focus {
+    border-color: #adb5bd;
+    box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
+}
