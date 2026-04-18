@@ -11,4 +11,5 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth.session')->group(function (): void {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/teams/{team}/points', [DashboardController::class, 'addPoints'])->name('teams.points');
+    Route::get('/historico', [DashboardController::class, 'history'])->name('history');
 });

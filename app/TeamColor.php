@@ -20,7 +20,7 @@ enum TeamColor: string
     public function bootstrapColor(): string
     {
         return match ($this) {
-            self::Blue => 'primary',
+            self::Blue => 'blue',
             self::Yellow => 'warning',
             self::Red => 'danger',
         };

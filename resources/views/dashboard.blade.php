@@ -4,6 +4,7 @@
         <div class="mx-auto d-flex align-items-center justify-content-between" style="max-width: 960px;">
             <h1 class="fw-bold fs-4 mb-0">Concurso Bíblico - Ester</h1>
             <div class="d-flex align-items-center gap-2">
+                <a href="{{ route('history') }}" class="btn btn-outline-secondary btn-sm">Histórico</a>
                 <button class="btn btn-outline-secondary btn-sm" disabled>Sorteio</button>
                 <button class="btn btn-outline-secondary btn-sm" disabled>Cronômetro</button>
                 <form method="POST" action="{{ route('logout') }}">
@@ -37,11 +38,17 @@
 
         <div class="mb-5 text-center">
             <button id="btn-reveal" class="btn btn-outline-dark px-4" onclick="toggleScores()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
                     <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
                     <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                Revelar Pontuações
+                <svg id="icon-eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2 d-none">
+                    <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"></path>
+                    <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path>
+                    <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"></path>
+                    <path d="m2 2 20 20"></path>
+                </svg>
+                <span id="btn-reveal-text">Revelar Pontuações</span>
             </button>
         </div>
 
@@ -50,7 +57,7 @@
                 @php $bsColor = $team->color->bootstrapColor(); @endphp
                 <div class="col-md-4">
                     <div class="team-card-{{ $team->color->value }} rounded-3 p-4 text-center">
-                        <h2 class="fw-bold text-{{ $bsColor }} fs-4 mb-4">{{ $team->name }}</h2>
+                        <h2 class="fw-bold text-dark fs-4 mb-4">{{ $team->name }}</h2>
 
                         <div class="mb-4 d-flex align-items-center justify-content-center" style="height: 80px;">
                             <span class="score-value display-4 fw-bold text-secondary" data-score="{{ $team->score }}" style="opacity: 0.35;">???</span>
@@ -122,19 +129,31 @@
             input.value = Math.max(1, current + delta);
         }
 
+        document.getElementById('input-points').addEventListener('input', function () {
+            const val = parseInt(this.value);
+            this.value = isNaN(val) || val < 1 ? 1 : val;
+        });
+
         // Toggle score reveal
-        let scoresRevealed = false;
+        let scoresRevealed = localStorage.getItem('scoresRevealed') === 'true';
 
-        function toggleScores() {
-            scoresRevealed = !scoresRevealed;
-            const btn = document.getElementById('btn-reveal');
-
+        function applyScoreState() {
             document.querySelectorAll('.score-value').forEach(el => {
                 el.textContent = scoresRevealed ? el.dataset.score : '???';
                 el.style.opacity = scoresRevealed ? '1' : '0.35';
             });
 
-            btn.textContent = scoresRevealed ? ' Ocultar Pontuações' : ' Revelar Pontuações';
+            document.getElementById('btn-reveal-text').textContent = scoresRevealed ? 'Ocultar Pontuações' : 'Revelar Pontuações';
+            document.getElementById('icon-eye').classList.toggle('d-none', scoresRevealed);
+            document.getElementById('icon-eye-off').classList.toggle('d-none', !scoresRevealed);
         }
+
+        function toggleScores() {
+            scoresRevealed = !scoresRevealed;
+            localStorage.setItem('scoresRevealed', scoresRevealed);
+            applyScoreState();
+        }
+
+        applyScoreState();
     </script>
 </x-layout>
