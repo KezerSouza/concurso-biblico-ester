@@ -63,16 +63,28 @@
                             <span class="score-value display-4 fw-bold text-secondary" data-score="{{ $team->score }}" style="opacity: 0.35;">???</span>
                         </div>
 
-                        <button
-                            class="btn btn-outline-{{ $bsColor }} w-100"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modal-add-points"
-                            data-team-id="{{ $team->id }}"
-                            data-team-name="{{ $team->name }}"
-                            data-team-color="{{ $bsColor }}"
-                        >
-                            Adicionar Pontos
-                        </button>
+                        <div class="d-flex flex-column gap-4">
+                            <button
+                                class="btn btn-outline-{{ $bsColor }} w-100"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal-points"
+                                data-team-id="{{ $team->id }}"
+                                data-team-name="{{ $team->name }}"
+                                data-mode="add"
+                            >
+                                Adicionar
+                            </button>
+                            <button
+                                class="btn btn-outline-secondary w-100"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal-points"
+                                data-team-id="{{ $team->id }}"
+                                data-team-name="{{ $team->name }}"
+                                data-mode="remove"
+                            >
+                                Remover
+                            </button>
+                        </div>
                     </div>
                 </div>
             @endforeach
@@ -80,26 +92,26 @@
     </main>
 
     {{-- Modal --}}
-    <div class="modal fade" id="modal-add-points" tabindex="-1">
+    <div class="modal fade" id="modal-points" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="modal-title">Adicionar Pontos</h5>
+                    <h5 class="modal-title fw-bold" id="modal-title"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="form-add-points" method="POST">
+                <form id="form-points" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <label class="form-label">Pontos a adicionar</label>
+                        <label class="form-label" id="modal-label"></label>
                         <div class="d-flex align-items-center gap-2">
-                            <button type="button" class="btn btn-outline-secondary" id="btn-minus" onclick="adjustPoints(-1)">−</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="adjustPoints(-1)">−</button>
                             <input type="number" name="points" id="input-points" class="form-control text-center fw-bold" value="1" min="1" style="width: 100px;">
-                            <button type="button" class="btn btn-outline-secondary" id="btn-plus" onclick="adjustPoints(1)">+</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="adjustPoints(1)">+</button>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-dark" id="btn-confirm">Confirmar</button>
+                        <button type="submit" class="btn btn-dark">Confirmar</button>
                     </div>
                 </form>
             </div>
@@ -108,18 +120,20 @@
 
     <script>
         // Populate modal with team data
-        document.getElementById('modal-add-points').addEventListener('show.bs.modal', function (event) {
+        document.getElementById('modal-points').addEventListener('show.bs.modal', function (event) {
             const btn = event.relatedTarget;
             const teamId = btn.dataset.teamId;
             const teamName = btn.dataset.teamName;
+            const isAdd = btn.dataset.mode === 'add';
 
-            document.getElementById('modal-title').textContent = 'Adicionar Pontos — ' + teamName;
-            document.getElementById('form-add-points').action = '/teams/' + teamId + '/points';
+            document.getElementById('modal-title').textContent = (isAdd ? 'Adicionar' : 'Remover') + ' Pontos — ' + teamName;
+            document.getElementById('modal-label').textContent = isAdd ? 'Pontos a adicionar' : 'Pontos a remover';
+            document.getElementById('form-points').action = '/teams/' + teamId + '/points' + (isAdd ? '' : '/remove');
             document.getElementById('input-points').value = 1;
         });
 
         // Reset input on close
-        document.getElementById('modal-add-points').addEventListener('hidden.bs.modal', function () {
+        document.getElementById('modal-points').addEventListener('hidden.bs.modal', function () {
             document.getElementById('input-points').value = 1;
         });
 
@@ -155,5 +169,9 @@
         }
 
         applyScoreState();
+
+        document.querySelector('form[action="{{ route('logout') }}"]').addEventListener('submit', function () {
+            localStorage.removeItem('scoresRevealed');
+        });
     </script>
 </x-layout>

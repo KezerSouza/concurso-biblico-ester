@@ -46,13 +46,18 @@
         @else
             <div class="list-group">
                 @foreach($histories as $entry)
-                    @php $bsColor = $entry->team->color->bootstrapColor(); @endphp
+                    @php
+                        $bsColor = $entry->team->color->bootstrapColor();
+                        $isRemoval = $entry->points < 0;
+                    @endphp
                     <div class="list-group-item d-flex align-items-center justify-content-between py-3">
                         <div class="d-flex align-items-center gap-3">
                             <span class="text-secondary small fw-semibold" style="min-width: 2rem;">#{{ $entry->id }}</span>
                             <span class="badge bg-{{ $bsColor }} rounded-pill">{{ $entry->team->name }}</span>
                         </div>
-                        <span class="fw-bold text-{{ $bsColor }}">+{{ $entry->points }} pts</span>
+                        <span class="fw-bold {{ $isRemoval ? 'text-danger' : 'text-' . $bsColor }}">
+                            {{ $isRemoval ? '' : '+' }}{{ $entry->points }} pts
+                        </span>
                     </div>
                 @endforeach
             </div>

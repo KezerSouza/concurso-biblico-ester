@@ -32,6 +32,21 @@ class DashboardController extends Controller
         return back()->with('success', "{$points} pontos adicionados à {$team->name}!");
     }
 
+    public function removePoints(Request $request, Team $team): RedirectResponse
+    {
+        $points = $request->integer('points');
+
+        $request->validate(
+            ['points' => ['required', 'integer', 'min:1']],
+            ['points.required' => 'Informe a pontuação.', 'points.min' => 'A pontuação deve ser pelo menos 1.'],
+        );
+
+        $team->decrement('score', $points);
+        $team->pointHistories()->create(['points' => -$points]);
+
+        return back()->with('success', "{$points} pontos removidos de {$team->name}!");
+    }
+
     public function history(Request $request): View
     {
         $teams = Team::query()->orderBy('id')->get();
