@@ -19,8 +19,13 @@
 .team-card-red   { border: 2px solid #dc3545; background-color: rgba(220, 53, 69, 0.05); }
 
 @media (max-width: 790px) {
-    .app-header h1  { display: none; }
-    .app-header-nav { margin-left: auto; }
+    .app-header--compact h1              { display: none; }
+    .app-header--compact .app-header-nav { margin-left: auto; }
+}
+
+@media (max-width: 450px) {
+    .app-header h1          { display: none; }
+    .app-header-nav         { margin-left: auto; }
 }
 
 @media (max-width: 530px) {

@@ -6,6 +6,7 @@ use App\Models\PointHistory;
 use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -21,10 +22,15 @@ class DashboardController extends Controller
     {
         $points = $request->integer('points');
 
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             ['points' => ['required', 'integer', 'min:1']],
-            ['points.required' => 'Informe a pontuação.', 'points.min' => 'A pontuação deve ser pelo menos 1.'],
+            ['points.required' => 'Pontuação não informada.', 'points.min' => 'A pontuação informada deve ser pelo menos 1.'],
         );
+
+        if ($validator->fails()) {
+            return back()->with('error', 'Não foi possível adicionar pontos: '.$validator->errors()->first());
+        }
 
         $team->increment('score', $points);
         $team->pointHistories()->create(['points' => $points]);
@@ -36,10 +42,15 @@ class DashboardController extends Controller
     {
         $points = $request->integer('points');
 
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             ['points' => ['required', 'integer', 'min:1']],
-            ['points.required' => 'Informe a pontuação.', 'points.min' => 'A pontuação deve ser pelo menos 1.'],
+            ['points.required' => 'Pontuação não informada.', 'points.min' => 'A pontuação informada deve ser pelo menos 1.'],
         );
+
+        if ($validator->fails()) {
+            return back()->with('error', 'Não foi possível remover pontos: '.$validator->errors()->first());
+        }
 
         $team->decrement('score', $points);
         $team->pointHistories()->create(['points' => -$points]);

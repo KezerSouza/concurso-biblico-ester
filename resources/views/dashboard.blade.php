@@ -1,17 +1,27 @@
 <x-layout>
-    <x-app-header>
+    <x-app-header hide-title-on-mobile>
         <a href="{{ route('history') }}" class="btn btn-outline-secondary">Histórico</a>
         <a href="{{ route('randomize') }}" class="btn btn-outline-secondary">Sorteio</a>
         <a href="{{ route('stopwatch') }}" class="btn btn-outline-secondary">Cronômetro</a>
         <a href="{{ route('temporizador') }}" class="btn btn-outline-secondary">Temporizador</a>
     </x-app-header>
 
-    {{-- Success toast --}}
     @if(session('success'))
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
             <div class="toast show align-items-center text-bg-dark border-0" role="alert">
                 <div class="d-flex">
                     <div class="toast-body">{{ session('success') }}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+            <div class="toast show align-items-center text-bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">{{ session('error') }}</div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
                 </div>
             </div>
@@ -90,7 +100,7 @@
                         <label class="form-label" id="modal-label"></label>
                         <div class="d-flex align-items-center gap-2">
                             <button type="button" class="btn btn-outline-secondary" onclick="adjustPoints(-1)">−</button>
-                            <input type="number" name="points" id="input-points" class="form-control text-center fw-bold" value="1" min="1" style="width: 100px;">
+                            <input type="text" inputmode="numeric" pattern="[0-9]*" name="points" id="input-points" class="form-control text-center fw-bold" value="1" style="width: 100px;">
                             <button type="button" class="btn btn-outline-secondary" onclick="adjustPoints(1)">+</button>
                         </div>
                     </div>
@@ -129,6 +139,11 @@
         }
 
         document.getElementById('input-points').addEventListener('input', function () {
+            const val = parseInt(this.value);
+            if (!isNaN(val)) { this.value = val; }
+        });
+
+        document.getElementById('input-points').addEventListener('blur', function () {
             const val = parseInt(this.value);
             this.value = isNaN(val) || val < 1 ? 1 : val;
         });

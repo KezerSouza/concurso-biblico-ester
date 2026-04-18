@@ -1,4 +1,6 @@
-<header class="app-header border-bottom bg-white px-4 py-3">
+@props(['hideTitleOnMobile' => false])
+
+<header class="app-header {{ $hideTitleOnMobile ? 'app-header--compact' : '' }} border-bottom bg-white px-4 py-3">
     <div class="mx-auto d-flex align-items-center justify-content-between" style="max-width: 960px;">
         <h1 class="fw-bold fs-4 mb-0 text-nowrap flex-shrink-0">Concurso Bíblico - Ester</h1>
         <div class="app-header-nav d-flex align-items-center gap-2 flex-shrink-1" style="overflow-x: auto;">

@@ -10,12 +10,12 @@
             <div class="d-flex align-items-center justify-content-center gap-2">
                 <div class="text-start">
                     <label class="form-label text-secondary small mb-1">Minutos</label>
-                    <input id="input-min" type="number" class="form-control text-center fw-bold fs-4" min="0" max="99" placeholder="00" style="width: 90px;">
+                    <input id="input-min" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control text-center fw-bold fs-4" style="width: 90px;">
                 </div>
                 <span class="fw-bold fs-3 mt-3">:</span>
                 <div class="text-start">
                     <label class="form-label text-secondary small mb-1">Segundos</label>
-                    <input id="input-sec" type="number" class="form-control text-center fw-bold fs-4" min="0" max="59" placeholder="00" style="width: 90px;">
+                    <input id="input-sec" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control text-center fw-bold fs-4" style="width: 90px;">
                 </div>
             </div>
         </div>

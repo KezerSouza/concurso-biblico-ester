@@ -7,11 +7,11 @@
     {{-- Main --}}
     <main class="mx-auto px-4 py-5" style="max-width: 960px;">
 
-        <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
             <h2 class="fw-bold fs-5 mb-0">Histórico de Pontuações</h2>
 
             {{-- Filter --}}
-            <form method="GET" action="{{ route('history') }}" class="d-flex align-items-center gap-2">
+            <form method="GET" action="{{ route('history') }}" class="d-flex align-items-center gap-2 ms-auto">
                 <label for="team-filter" class="form-label mb-0 text-secondary small">Filtrar por time</label>
                 <select id="team-filter" name="team" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
                     <option value="">Todos os times</option>
