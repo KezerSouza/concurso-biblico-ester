@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClockController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RandomizeController;
@@ -15,4 +16,6 @@ Route::middleware('auth.session')->group(function (): void {
     Route::post('/teams/{team}/points/remove', [DashboardController::class, 'removePoints'])->name('teams.points.remove');
     Route::get('/historico', [DashboardController::class, 'history'])->name('history');
     Route::get('/sorteio', [RandomizeController::class, 'index'])->name('randomize');
+    Route::get('/cronometro', [ClockController::class, 'stopwatch'])->name('stopwatch');
+    Route::get('/temporizador', [ClockController::class, 'temporizador'])->name('temporizador');
 });

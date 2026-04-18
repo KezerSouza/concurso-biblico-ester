@@ -6,7 +6,8 @@
             <div class="d-flex align-items-center gap-2">
                 <a href="{{ route('history') }}" class="btn btn-outline-secondary">Histórico</a>
                 <a href="{{ route('randomize') }}" class="btn btn-outline-secondary">Sorteio</a>
-                <button class="btn btn-outline-secondary" disabled>Cronômetro</button>
+                <a href="{{ route('stopwatch') }}" class="btn btn-outline-secondary">Cronômetro</a>
+                <a href="{{ route('temporizador') }}" class="btn btn-outline-secondary">Temporizador</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="btn btn-outline-dark" title="Sair">
