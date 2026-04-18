@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RandomizeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -13,4 +14,5 @@ Route::middleware('auth.session')->group(function (): void {
     Route::post('/teams/{team}/points', [DashboardController::class, 'addPoints'])->name('teams.points');
     Route::post('/teams/{team}/points/remove', [DashboardController::class, 'removePoints'])->name('teams.points.remove');
     Route::get('/historico', [DashboardController::class, 'history'])->name('history');
+    Route::get('/sorteio', [RandomizeController::class, 'index'])->name('randomize');
 });
